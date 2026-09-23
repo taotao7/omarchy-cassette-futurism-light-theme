@@ -28,8 +28,8 @@ omarchy theme set cassette-futurism-light
 | Blue | `#076678` |
 | Purple | `#b16286` |
 
-The theme ships `colors.toml` plus a warm beige CRT-style background with
-scanlines, panel grid, and amber glow, and hand-tuned `btop.theme` and
+The theme ships `colors.toml` plus a retro-futurism artwork background,
+and hand-tuned `btop.theme` and
 `helix.toml`, plus a `shell.controls.toml` section override that keeps buttons and other controls visible (stronger fills, amber accent borders). Terminal, Hyprland, shell, and editor configs are generated
 from the palette by Omarchy's templates.
 
@@ -38,6 +38,8 @@ from the palette by Omarchy's templates.
 Based on the palette and theme direction from
 [cassette-futurism-theme](https://github.com/taotao7/cassette-futurism-theme),
 ported for Zed from [cassette-futurism](https://github.com/taotao7/cassette-futurism).
+
+Background artwork: [wallhaven k8jk76](https://wallhaven.cc/w/k8jk76).
 
 ## License
 
