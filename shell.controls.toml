@@ -1,0 +1,22 @@
+# Cassette Futurism — Beige Terminal: control chrome visibility.
+# Replaces the [controls] section of the generated shell.toml.
+# On the beige background the stock 0.04 idle fill makes buttons vanish,
+# so the idle/hover states get stronger fills and an amber accent border.
+
+normal-color        = "#2d2a27"
+normal-fill-alpha   = 0.10
+normal-border       = "accent"
+normal-border-width = 1
+normal-border-alpha = 0.55
+
+hover-cursor-color        = "#2d2a27"
+hover-cursor-fill-alpha   = 0.16
+hover-cursor-border       = "accent"
+hover-cursor-border-width = 1
+hover-cursor-border-alpha = 0.8
+
+focus-color        = "#2d2a27"
+focus-fill-alpha   = 0.16
+focus-border       = "accent"
+focus-border-width = 1
+focus-border-alpha = 0.8
