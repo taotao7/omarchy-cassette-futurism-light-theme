@@ -29,8 +29,9 @@ omarchy theme set cassette-futurism-light
 | Purple | `#b16286` |
 
 The theme ships `colors.toml` plus a warm beige CRT-style background with
-scanlines, panel grid, and amber glow. Terminal, Hyprland, btop, shell, and
-editor configs are generated from the palette by Omarchy's templates.
+scanlines, panel grid, and amber glow, and hand-tuned `btop.theme` and
+`helix.toml`. Terminal, Hyprland, shell, and editor configs are generated
+from the palette by Omarchy's templates.
 
 ## Attribution
 

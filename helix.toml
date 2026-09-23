@@ -1,0 +1,94 @@
+# Cassette Futurism — Beige Terminal (Helix)
+
+"attribute" = "cyan"
+"keyword" = "orange"
+"keyword.directive" = "purple"
+"namespace" = "purple"
+"punctuation" = "fg_dim"
+"operator" = "purple"
+"special" = "pink"
+"variable.other.member" = "fg"
+"variable.parameter" = "cyan"
+"variable.builtin" = { fg = "cyan", modifiers = ["italic"] }
+"type" = "purple"
+"type.builtin" = { fg = "purple", modifiers = ["italic"] }
+"constructor" = "purple"
+"function" = "orange"
+"function.macro" = "purple"
+"function.builtin" = "blue"
+"comment" = { fg = "comment", modifiers = ["italic"] }
+"constant" = "blue"
+"constant.builtin" = { fg = "blue", modifiers = ["italic"] }
+"string" = "green"
+"string.escape" = "pink"
+"string.regex" = "pink"
+"number" = "blue"
+"tag" = "pink"
+"tag.attribute" = { fg = "orange", modifiers = ["italic"] }
+
+"markup.heading" = { fg = "orange", modifiers = ["bold"] }
+"markup.list" = "blue"
+"markup.bold" = { fg = "orange", modifiers = ["bold"] }
+"markup.italic" = { fg = "yellow", modifiers = ["italic"] }
+"markup.link.url" = { fg = "blue", modifiers = ["underlined"] }
+"markup.link.text" = "purple"
+"markup.raw" = "yellow"
+"markup.quote" = "fg_dim"
+
+"diff.plus" = "git_add"
+"diff.minus" = "git_delete"
+"diff.delta" = "git_change"
+
+"ui.background" = { bg = "bg" }
+"ui.text" = "fg"
+"ui.cursor" = { fg = "bg", bg = "orange" }
+"ui.cursorline" = { bg = "bg3" }
+"ui.selection" = { bg = "selection" }
+"ui.linenr" = "comment"
+"ui.linenr.selected" = { fg = "orange", modifiers = ["bold"] }
+"ui.statusline" = { fg = "fg_dim", bg = "bg1" }
+"ui.statusline.inactive" = { fg = "comment", bg = "bg_dim" }
+"ui.popup" = { fg = "fg", bg = "bg2" }
+"ui.window" = "border"
+"ui.help" = { fg = "fg", bg = "bg2" }
+"ui.menu" = { fg = "fg", bg = "bg2" }
+"ui.menu.selected" = { fg = "bg", bg = "orange" }
+"ui.virtual.whitespace" = "border"
+"ui.virtual.indent-guide" = "border"
+
+"diagnostic.error" = { underline = { color = "error", style = "curl" } }
+"diagnostic.warning" = { underline = { color = "warn", style = "curl" } }
+"diagnostic.info" = { underline = { color = "info", style = "curl" } }
+"diagnostic.hint" = { underline = { color = "hint", style = "curl" } }
+"error" = "error"
+"warning" = "warn"
+"info" = "info"
+"hint" = "hint"
+
+[palette]
+bg = "#f5f0e8"
+bg_dim = "#f8f5ee"
+bg1 = "#ede8e0"
+bg2 = "#faf8f4"
+bg3 = "#e8e0d6"
+bg4 = "#d4c8b8"
+selection = "#d4c8b8"
+border = "#c4b8a8"
+fg = "#2d2a27"
+fg_dim = "#6b6560"
+comment = "#928374"
+red = "#9d0006"
+orange = "#d65d0e"
+yellow = "#b57614"
+green = "#79740e"
+cyan = "#458588"
+blue = "#076678"
+purple = "#b16286"
+pink = "#cc241d"
+error = "#9d0006"
+warn = "#d65d0e"
+info = "#076678"
+hint = "#458588"
+git_add = "#458588"
+git_change = "#d65d0e"
+git_delete = "#9d0006"
