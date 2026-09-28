@@ -26,10 +26,11 @@ THEME_NAME = Path.home() / ".local/state/omarchy/current/theme.name"
 RADIUS = 8
 SLICE = 12
 PANEL = 40
+FONT = "LXGW WenKai 12"
 
 CLASSICUI_KEYS = {
-    "Font": '"Noto Sans CJK SC 12"',
-    "MenuFont": '"Noto Sans CJK SC 12"',
+    "Font": f'"{FONT}"',
+    "MenuFont": f'"{FONT}"',
     "Theme": "omarchy",
     "DarkTheme": "omarchy",
     "UseDarkTheme": "False",
@@ -114,7 +115,7 @@ Description=Generated from the active Omarchy theme
 ScaleWithDPI=True
 
 [InputPanel]
-Font="Noto Sans CJK SC 12"
+Font="{FONT}"
 NormalColor={fg}
 HighlightColor={accent}
 HighlightBackgroundColor={selection}
@@ -176,7 +177,7 @@ Top=4
 Bottom=4
 
 [Menu]
-Font="Noto Sans CJK SC 12"
+Font="{FONT}"
 NormalColor={fg}
 HighlightCandidateColor={accent}
 Spacing=2

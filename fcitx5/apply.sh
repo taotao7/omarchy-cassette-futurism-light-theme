@@ -7,8 +7,19 @@
 set -euo pipefail
 
 here=$(cd "$(dirname "$0")" && pwd)
+root=$(cd "$here/.." && pwd)
 hook_src="$here/cassette-futurism-fcitx5"
 hook_dst="$HOME/.config/omarchy/hooks/theme-set.d/cassette-futurism-fcitx5"
+font_src="$root/fonts/LXGWWenKai-Regular.ttf"
+font_dst="$HOME/.local/share/fonts/LXGWWenKai-Regular.ttf"
+
+if [[ -f $font_src ]]; then
+  mkdir -p "$(dirname "$font_dst")"
+  if [[ ! -f $font_dst ]] || ! cmp -s "$font_src" "$font_dst"; then
+    cp "$font_src" "$font_dst"
+    fc-cache -f "$(dirname "$font_dst")" >/dev/null 2>&1 || true
+  fi
+fi
 
 mkdir -p "$(dirname "$hook_dst")"
 if [[ ! -f $hook_dst ]] || ! cmp -s "$hook_src" "$hook_dst"; then

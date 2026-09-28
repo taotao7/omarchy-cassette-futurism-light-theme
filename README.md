@@ -16,7 +16,7 @@ omarchy theme install https://github.com/taotao7/omarchy-cassette-futurism-light
 `omarchy theme install` already applies the desktop theme. Omarchy does not run scripts shipped in a theme, so `apply.sh` is the one extra command a fresh install needs. It:
 
 - restyles the idle screensaver as a beige cassette (analog dream / A-SIDE) instead of the stock Omarchy logo, and installs a user wrapper so idle/launch actually use it
-- paints the fcitx5 candidate window from this palette: paper background, amber border, selection pill, 8px corners
+- installs LXGW WenKai from `fonts/` into `~/.local/share/fonts` (no extra package) and paints the fcitx5 candidate window from this palette: paper background, amber border, selection pill, 8px corners, WenKai UI
 - installs `theme-set` hooks so later switches — including to the dark variant — keep both extras in sync
 
 Running `apply.sh` from either Cassette Futurism checkout is enough. Preview the screensaver with `omarchy launch screensaver`.
@@ -55,6 +55,8 @@ Based on the palette and theme direction from
 ported for Zed from [cassette-futurism](https://github.com/taotao7/cassette-futurism).
 
 Background artwork: [wallhaven k8jk76](https://wallhaven.cc/w/k8jk76).
+
+LXGW WenKai (霞鹜文楷) is bundled under `fonts/` under the [SIL Open Font License 1.1](fonts/OFL.txt), from [lxgw/LxgwWenKai](https://github.com/lxgw/LxgwWenKai).
 
 ## License
 
