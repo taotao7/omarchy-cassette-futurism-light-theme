@@ -1,0 +1,22 @@
+# Cassette Futurism Light — Analog Dream: Beige Terminal
+# Paper CRT / daisy-wheel print. No matrix, decrypt, or rainbow.
+# Read by ~/.local/bin/omarchy-screensaver from the active Omarchy theme.
+
+effects = ["print", "vhstape", "sweep", "wipe", "pour", "slice", "highlight"]
+background = "#f5f0e8"
+gradient = ["#2d2a27", "#d65d0e", "#8b5e34"]
+gradient-direction = "vertical"
+
+[vhstape]
+glitch-line-colors = ["#2d2a27", "#d65d0e", "#8b5e34", "#2d2a27"]
+glitch-wave-colors = ["#928374", "#d65d0e", "#2d2a27"]
+noise-colors = ["#f5f0e8", "#ede8e0", "#928374", "#2d2a27"]
+glitch-line-chance = 0.04
+noise-chance = 0.003
+
+[highlight]
+brightness = 1.35
+width = 8
+
+[print]
+speed = 2

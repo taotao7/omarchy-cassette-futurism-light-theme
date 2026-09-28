@@ -32,7 +32,7 @@ omarchy theme install https://github.com/taotao7/omarchy-cassette-futurism-light
 
 The theme ships `colors.toml` plus a retro-futurism artwork background,
 and hand-tuned `btop.theme` and
-`helix.toml`, plus a `shell.controls.toml` section override that keeps buttons and other controls visible (stronger fills, amber accent borders). `fcitx5/apply.sh` paints the fcitx5 candidate window from the same palette. Terminal, Hyprland, shell, and editor configs are generated
+`helix.toml`, plus a `shell.controls.toml` section override that keeps buttons and other controls visible (stronger fills, amber accent borders). `screensaver.toml` and `screensaver.txt` restyle the idle screensaver as a beige cassette (analog dream / A-SIDE) instead of the stock Omarchy logo. `fcitx5/apply.sh` paints the fcitx5 candidate window from the same palette. Terminal, Hyprland, shell, and editor configs are generated
 from the palette by Omarchy's templates.
 
 ## Attribution
