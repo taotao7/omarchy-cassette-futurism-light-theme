@@ -10,10 +10,23 @@ retro accents. Dark variant: [omarchy-cassette-futurism-theme](https://github.co
 
 ```bash
 omarchy theme install https://github.com/taotao7/omarchy-cassette-futurism-light-theme.git
-~/.config/omarchy/themes/cassette-futurism-light/fcitx5/apply.sh
+~/.config/omarchy/themes/cassette-futurism-light/apply.sh
 ```
 
-`omarchy theme install` already applies the desktop theme. Omarchy does not run scripts shipped in a theme, so the second command is what points fcitx5 at this palette: paper background, amber border, selection pill, 8px corners. It also installs a `theme-set` hook. After that, switching theme — including to the dark variant — repaints the candidate window from the active palette. Running `apply.sh` from either checkout is enough.
+`omarchy theme install` already applies the desktop theme. Omarchy does not run scripts shipped in a theme, so `apply.sh` is the one extra command a fresh install needs. It:
+
+- restyles the idle screensaver as a beige cassette (analog dream / A-SIDE) instead of the stock Omarchy logo, and installs a user wrapper so idle/launch actually use it
+- paints the fcitx5 candidate window from this palette: paper background, amber border, selection pill, 8px corners
+- installs `theme-set` hooks so later switches — including to the dark variant — keep both extras in sync
+
+Running `apply.sh` from either Cassette Futurism checkout is enough. Preview the screensaver with `omarchy launch screensaver`.
+
+You can also run the extras separately:
+
+```bash
+~/.config/omarchy/themes/cassette-futurism-light/screensaver/apply.sh
+~/.config/omarchy/themes/cassette-futurism-light/fcitx5/apply.sh
+```
 
 ## Palette
 
@@ -32,7 +45,7 @@ omarchy theme install https://github.com/taotao7/omarchy-cassette-futurism-light
 
 The theme ships `colors.toml` plus a retro-futurism artwork background,
 and hand-tuned `btop.theme` and
-`helix.toml`, plus a `shell.controls.toml` section override that keeps buttons and other controls visible (stronger fills, amber accent borders). `screensaver.toml` and `screensaver.txt` restyle the idle screensaver as a beige cassette (analog dream / A-SIDE) instead of the stock Omarchy logo. `fcitx5/apply.sh` paints the fcitx5 candidate window from the same palette. Terminal, Hyprland, shell, and editor configs are generated
+`helix.toml`, plus a `shell.controls.toml` section override that keeps buttons and other controls visible (stronger fills, amber accent borders). `screensaver.toml` and `screensaver.txt` are the cassette art and analog ttfx palette; they only take effect after `apply.sh` (or `screensaver/apply.sh`) installs the user wrapper. `fcitx5/apply.sh` paints the fcitx5 candidate window from the same palette. Terminal, Hyprland, shell, and editor configs are generated
 from the palette by Omarchy's templates.
 
 ## Attribution

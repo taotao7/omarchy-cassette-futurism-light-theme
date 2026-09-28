@@ -1,0 +1,22 @@
+#!/bin/bash
+# theme-set hook. After a theme change, refresh the user wrapper from
+# whichever Cassette Futurism checkout is installed. The wrapper itself
+# only takes over when the active theme ships screensaver.toml.
+
+set -euo pipefail
+
+dst="$HOME/.local/bin/omarchy-screensaver"
+mkdir -p "$(dirname "$dst")"
+
+for candidate in \
+  "$HOME/.config/omarchy/themes/cassette-futurism/screensaver/omarchy-screensaver" \
+  "$HOME/.config/omarchy/themes/cassette-futurism-light/screensaver/omarchy-screensaver"
+do
+  if [[ -f $candidate ]]; then
+    cp "$candidate" "$dst"
+    chmod 755 "$dst"
+    exit 0
+  fi
+done
+
+exit 0

@@ -1,0 +1,239 @@
+#!/bin/bash
+# Theme-aware Omarchy screensaver.
+# Installed to ~/.local/bin by screensaver/apply.sh so it shadows the
+# packaged binary for compositor-spawned terminals.
+# Only takes over when the active theme ships screensaver.toml; otherwise
+# it hands off to stock Omarchy.
+
+screensaver_in_focus() {
+  hyprctl activewindow -j | jq -e '.class == "org.omarchy.screensaver"' >/dev/null 2>&1
+}
+
+exit_screensaver() {
+  hyprctl eval 'hl.config({ cursor = { invisible = false } })' &>/dev/null || hyprctl keyword cursor:invisible false &>/dev/null || true
+  pkill -x ttfx 2>/dev/null
+  pkill -f '[o]rg.omarchy.screensaver' 2>/dev/null
+  exit 0
+}
+
+trap exit_screensaver SIGINT SIGTERM SIGHUP SIGQUIT
+
+theme_dir="$HOME/.local/state/omarchy/current/theme"
+stock=/usr/bin/omarchy-screensaver
+branding="$theme_dir/screensaver.txt"
+[[ -f $branding ]] || branding="$HOME/.config/omarchy/branding/screensaver.txt"
+
+if ! command -v ttfx >/dev/null || [[ ! -f $theme_dir/screensaver.toml ]] || [[ ! -f $branding ]]; then
+  exec "$stock" "$@"
+fi
+
+config_json=$(python3 - "$theme_dir" <<'PY'
+import json, sys, tomllib
+from pathlib import Path
+
+def hx(value, fallback=""):
+    raw = str(value if value not in (None, "") else fallback).strip()
+    return raw.removeprefix("#").lower()
+
+def hx_list(values, fallback):
+    if not values:
+        return [hx(v) for v in fallback]
+    return [hx(v) for v in values]
+
+theme = Path(sys.argv[1])
+colors = {}
+colors_path = theme / "colors.toml"
+if colors_path.exists():
+    colors = tomllib.loads(colors_path.read_text())
+
+mode = str(colors.get("mode", "light")).lower()
+bg = hx(colors.get("background"), "f5f0e8")
+dark_bg = hx(colors.get("dark_background"), "ede8e0")
+fg = hx(colors.get("foreground"), "2d2a27")
+accent = hx(colors.get("accent"), "d65d0e")
+muted = hx(colors.get("muted"), "928374")
+brown = hx(colors.get("brown"), "8b5e34")
+cyan = hx(colors.get("cyan"), "458588")
+
+if mode == "dark":
+    cfg = {
+        "effects": ["vhstape", "sweep", "wipe", "pour", "highlight", "smoke", "print"],
+        "background": bg,
+        "gradient": [fg, accent, cyan],
+        "gradient_direction": "vertical",
+        "vhstape": {
+            "glitch_line_colors": [fg, accent, brown, fg],
+            "glitch_wave_colors": [muted, accent, fg],
+            "noise_colors": [bg, dark_bg, muted, fg],
+            "glitch_line_chance": 0.05,
+            "noise_chance": 0.004,
+        },
+        "smoke": {
+            "starting_color": muted,
+            "smoke_gradient": [dark_bg, accent],
+        },
+        "highlight": {"brightness": 1.45, "width": 8},
+        "print": {"speed": 2},
+    }
+else:
+    cfg = {
+        "effects": ["print", "vhstape", "sweep", "wipe", "pour", "slice", "highlight"],
+        "background": bg,
+        "gradient": [fg, accent, brown],
+        "gradient_direction": "vertical",
+        "vhstape": {
+            "glitch_line_colors": [fg, accent, brown, fg],
+            "glitch_wave_colors": [muted, accent, fg],
+            "noise_colors": [bg, dark_bg, muted, fg],
+            "glitch_line_chance": 0.04,
+            "noise_chance": 0.003,
+        },
+        "smoke": {
+            "starting_color": muted,
+            "smoke_gradient": [dark_bg, accent],
+        },
+        "highlight": {"brightness": 1.35, "width": 8},
+        "print": {"speed": 2},
+    }
+
+overlay = tomllib.loads((theme / "screensaver.toml").read_text())
+if overlay.get("effects"):
+    cfg["effects"] = list(overlay["effects"])
+if overlay.get("background"):
+    cfg["background"] = hx(overlay["background"])
+if overlay.get("gradient"):
+    cfg["gradient"] = hx_list(overlay["gradient"], cfg["gradient"])
+direction = overlay.get("gradient-direction") or overlay.get("gradient_direction")
+if direction:
+    cfg["gradient_direction"] = str(direction)
+for name in ("vhstape", "smoke", "highlight", "print"):
+    section = overlay.get(name) or {}
+    if not isinstance(section, dict):
+        continue
+    dst = cfg.setdefault(name, {})
+    for key, value in section.items():
+        norm = key.replace("-", "_")
+        if isinstance(value, list):
+            dst[norm] = hx_list(value, [])
+        elif norm in ("starting_color",) or "color" in norm:
+            dst[norm] = hx(value)
+        else:
+            dst[norm] = value
+
+print(json.dumps(cfg))
+PY
+) || true
+
+if [[ -z $config_json ]]; then
+  exec "$stock" "$@"
+fi
+
+bg=$(jq -r '.background' <<<"$config_json")
+fg=$(jq -r '.gradient[0]' <<<"$config_json")
+
+osc_rgb() {
+  local h="${1,,}"
+  printf '\033]%s;rgb:%s/%s/%s\007' "$2" "${h:0:2}" "${h:2:2}" "${h:4:2}"
+}
+
+osc_rgb "$bg" 11
+osc_rgb "$fg" 10
+
+hyprctl eval 'hl.config({ cursor = { invisible = true } })' &>/dev/null || hyprctl keyword cursor:invisible true &>/dev/null
+
+tty=$(tty 2>/dev/null)
+
+wait_for_terminal_resize() {
+  local deadline=$((SECONDS + 2))
+  while ((SECONDS < deadline)) && [[ $(stty size 2>/dev/null) == "24 80" ]]; do
+    sleep 0.02
+  done
+}
+
+wait_for_terminal_resize
+
+mapfile -t effects < <(jq -r '.effects[]' <<<"$config_json")
+if ((${#effects[@]} == 0)); then
+  exec "$stock" "$@"
+fi
+
+common=(
+  -i "$branding"
+  --frame-rate 120
+  --canvas-width 0
+  --canvas-height 0
+  --reuse-canvas
+  --anchor-canvas c
+  --anchor-text c
+  --no-eol
+  --no-restore-cursor
+  --terminal-background-color "#$bg"
+)
+
+gradient=()
+mapfile -t gradient < <(jq -r '.gradient[]' <<<"$config_json")
+direction=$(jq -r '.gradient_direction // "vertical"' <<<"$config_json")
+
+jq_list() {
+  jq -r "$1 | arrays[]? // empty" <<<"$config_json"
+}
+
+run_effect() {
+  local effect="$1"
+  local extra=()
+  local colors=()
+
+  case "$effect" in
+  vhstape)
+    mapfile -t colors < <(jq_list '.vhstape.glitch_line_colors')
+    ((${#colors[@]})) && extra+=(--glitch-line-colors "${colors[@]}")
+    mapfile -t colors < <(jq_list '.vhstape.glitch_wave_colors')
+    ((${#colors[@]})) && extra+=(--glitch-wave-colors "${colors[@]}")
+    mapfile -t colors < <(jq_list '.vhstape.noise_colors')
+    ((${#colors[@]})) && extra+=(--noise-colors "${colors[@]}")
+    extra+=(
+      --glitch-line-chance "$(jq -r '.vhstape.glitch_line_chance // 0.04' <<<"$config_json")"
+      --noise-chance "$(jq -r '.vhstape.noise_chance // 0.003' <<<"$config_json")"
+    )
+    ;;
+  smoke)
+    extra+=(
+      --starting-color "$(jq -r '.smoke.starting_color // "7a7a7a"' <<<"$config_json")"
+    )
+    mapfile -t colors < <(jq_list '.smoke.smoke_gradient')
+    ((${#colors[@]})) && extra+=(--smoke-gradient-stops "${colors[@]}")
+    ;;
+  highlight)
+    extra+=(
+      --highlight-brightness "$(jq -r '.highlight.brightness // 1.35' <<<"$config_json")"
+      --highlight-width "$(jq -r '.highlight.width // 8' <<<"$config_json")"
+    )
+    ;;
+  print)
+    extra+=(--print-speed "$(jq -r '.print.speed // 2' <<<"$config_json")")
+    ;;
+  esac
+
+  ttfx "${common[@]}" "$effect" \
+    --final-gradient-stops "${gradient[@]}" \
+    --final-gradient-steps 10 \
+    --final-gradient-direction "$direction" \
+    "${extra[@]}"
+}
+
+last=""
+while true; do
+  effect=${effects[RANDOM % ${#effects[@]}]}
+  if [[ $effect == "$last" && ${#effects[@]} -gt 1 ]]; then
+    continue
+  fi
+  last=$effect
+
+  run_effect "$effect" &
+
+  while pgrep -t "${tty#/dev/}" -x ttfx >/dev/null; do
+    if read -n1 -t 1 || ! screensaver_in_focus; then
+      exit_screensaver
+    fi
+  done
+done
