@@ -54,7 +54,7 @@ Based on the palette and theme direction from
 [cassette-futurism-theme](https://github.com/taotao7/cassette-futurism-theme),
 ported for Zed from [cassette-futurism](https://github.com/taotao7/cassette-futurism).
 
-Background artwork: [wallhaven k8jk76](https://wallhaven.cc/w/k8jk76).
+Background artwork: [wallhaven k8jk76](https://wallhaven.cc/w/k8jk76), [wallhaven vpejo3](https://wallhaven.cc/w/vpejo3), [wallhaven q6omvd](https://wallhaven.cc/w/q6omvd).
 
 LXGW WenKai (霞鹜文楷) is bundled under `fonts/` under the [SIL Open Font License 1.1](fonts/OFL.txt), from [lxgw/LxgwWenKai](https://github.com/lxgw/LxgwWenKai).
 
